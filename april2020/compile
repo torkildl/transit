@@ -1,0 +1,31 @@
+## Put this Makefile in your project directory---i.e., the directory
+## containing the paper you are writing. Assuming you are using the
+## rest of the toolchain here, you can use it to create .html, .tex,
+## and .pdf output files (complete with bibliography, if present) from
+## your markdown file. 
+## -	Change the paths at the top of the file as needed.
+## -	Using `make` without arguments will generate html, tex, and pdf 
+## 	output files from all of the files with the designated markdown
+##	extension. The default is `.md` but you can change this. 
+## -	You can specify an output format with `make tex`, `make pdf`,  
+## - 	`make html`, or `make docx`.
+## -	Doing `make clean` will remove all the .tex, .html, .pdf, and .docx files 
+## 	in your working directory. Make sure you do not have files in these
+##	formats that you want to keep!
+
+#!/bin/bash
+
+## Location of Pandoc support files.
+PREFIX=../lib
+
+## Pandoc options to use for all document types
+##OPTIONS = markdown+simple_tables+table_captions+yaml_metadata_block+smart
+OPTIONS=markdown+simple_tables+table_captions+yaml_metadata_block
+
+
+### RUN STUFF
+rm -f *.pdf *.png *.md *.html
+R --slave -e "knitr::knit(input='datapunkt.Rmd',output='datapunkt.md')"
+pandoc -r $OPTIONS -w html  --template=$PREFIX/templates/html/html-github.template --css=$PREFIX/css/kultiad.css --self-contained -o datapunkt.html datapunkt.md
+
+

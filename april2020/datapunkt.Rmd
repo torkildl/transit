@@ -1,0 +1,90 @@
+---
+title: "Datapunkt"
+subtitle: "Dødelighet i Norge 1847-2018: Modernitet, pandemi og vekst"
+author: "Torkild Hovde Lyngstad"
+---
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(fig.path='',
+                dev=c("png","pdf"),
+                fig.width=8,
+                fig.height=7,
+               dpi=300,
+               fig.show='show',
+               fig.lp="fig:",
+               fig.cap="",
+               cache=FALSE,
+               par=TRUE,
+               echo=FALSE,
+               results="show",
+               message=FALSE,
+               warning=FALSE,
+               include=TRUE
+                )
+knitr::knit_hooks$set(par=function(before, options, envir){
+     if (before && options$fig.show!='none') par(mar=c(4,4,.1,.1),cex.lab=.95,cex.axis=.9,mgp=c(2,.7,0),tcl=-.3)
+}, crop=knitr::hook_pdfcrop)
+knitr::opts_knit$set(kfigr.prefix=TRUE,
+               kfigr.link=FALSE)
+
+library(tidyverse)
+library(data.table)
+library(here)
+```
+
+## Norsk dødelighet 1847-2018: Et visuelt minnesmerke om spanskesyken, den forrige pandemien.
+
+Figuren viser dødelighetsrater beregnet for alle alderstrinn under 100 år for hvert år siden 1847. Ratene er rangert, og plottet som ruter med farge etter hvor høy dødeligheten var i den bestemte aldersgruppen det bestemte året. Lyse farger (lys gul) indikerer at raten er blant de høyeste i perioden som helhet, og mørke farger indikerer at raten er blant de laveste i perioden. Dataene kommer fra Human mortality database, den viktiste samledatabasen for dødelighetsdata, men er opprinnelig hentet fra historisk og nåtidig statistikk fremstilt av [Statistisk sentralbyrå](http://www.ssb.no).
+<br>
+
+```{r datapunkt}
+
+### Jeg har lastet ned M_1x1-filene fra [Human Mortality Database](https://www.mortality.org)
+hmd <-  fread(input=here("data/hmd/Mx_1x1/NOR.Mx_1x1.txt"),colClasses = "character") %>% 
+  rename(År = Year, Alder = Age) %>% 
+  gather(Kjønn, M1x1, -År, -Alder) %>% 
+  mutate_at(c("Alder","År","M1x1"), as.numeric)
+
+### Plukk ut Norge, dropp svært høye aldre (100+), og velg totaldødelighet (ikke skjill på kjønn).
+norge <-  hmd %>% 
+  filter(Alder<100, Kjønn=="Total") %>% 
+  mutate(per100k = M1x1*100000) %>% 
+  mutate(pctm = percent_rank(M1x1))
+
+### Plot total dødelighet som raster, med farge som intensitet.
+### "Intensiteten" sier hvor observasjonen befinner seg i fordelingen av alle år-x-alder-observasjoner
+### Dette er svak demografisk praksis, men gir best visuelt resultat...
+###
+### Plottet er inspirert av Kieran Healys arbeid med lignende data for UK.
+aprilplot <- norge %>% 
+  filter(TRUE) %>% 
+  ggplot(aes(x=År, y=Alder, fill=pctm)) + 
+    geom_raster() +
+    scale_x_continuous(expand=c(0,0)) + 
+    scale_y_continuous(expand=c(0,0),breaks = c(0,20,40,60,80,99)) + 
+    scale_fill_viridis_c(option = "inferno", breaks = c(0,1), labels = c("Lavest dødelighet","Høyest dødelighet")) +
+    labs(title="Dødelighetsutviklingen i Norge 1847-2018", 
+         subtitle="Aldersspesifikke dødelighetsrater rangert over hele perioden", x="År", y="Alder", 
+        fill="Dødelighet", caption = "Kilde: Human Mortality Database (URL: www.mortality.org).") +
+    theme_minimal() +
+    guides("fill" = guide_colorbar(direction="horizontal",position="bottom", barwidth=30, barheight=0.7,
+                                  title="")) +
+    theme(legend.position = "bottom",
+            panel.background=element_blank(), 
+            panel.spacing = unit(c(0, 0, 0, 0), "cm"),       
+            plot.background = element_rect(fill = "transparent",colour = "white"),
+            plot.margin = unit(c(0, 0, 0, 0), "cm")
+            )
+  
+aprilplot
+```
+<br>
+
+Dødeligheten i Norge har sunket over lang tid og synker fortsatt. Om vi følger utviklingen over år ser noen viktige trekk: barnedødeligheten har sunket dramatisk, og er nesten borte. Midt i figuren, rundt 1918, lyser en vertikal linje opp. Disse årene var dødeligheten markant høyere enn både årene før og etter. Linjen er avtrykket av spanskesyken, den forrige store pandemien. Vi kan også skimte en jevnt over høyere dødelighet under okkupasjonen av Norge i 2. verdenskrig. Etterkrigstiden kjennetegnes av lavere dødelighet, som er med på å forme dagens samfunn med relativt mange eldre.
+
+
+### Om Datapunkt
+
+Datapunkt er en irregulær spalte i Transit magasin. Ansvarlig for spalten er [Torkild Hovde Lyngstad](https://torkildl.github.io). Bidrag og forslag kan sendes på [epost](mailto:t.h.lyngstad@sosgeo.uio.no). Programmer og datafiler for figurene ligger på spaltens [GitHub-lager](https://github.com/torkildl/transit). Bruk av enkelte av datakildene krever godkjenning av dataeier og er derfor ikke tilgjengelige på lageret.
+
+
+

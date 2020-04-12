@@ -1,0 +1,48 @@
+---
+title: "Datapunkt"
+subtitle: "UNDERTITTEL"
+author: "Torkild Hovde Lyngstad"
+---
+<br>
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(fig.path='',
+                dev=c("png","pdf"),
+                fig.width=8,
+                fig.height=7,
+               dpi=300,
+               fig.show='show',
+               fig.lp="fig:",
+               fig.cap="",
+               cache=FALSE,
+               par=TRUE,
+               echo=FALSE,
+               results="show",
+               message=FALSE,
+               warning=FALSE,
+               include=TRUE
+                )
+knitr::knit_hooks$set(par=function(before, options, envir){
+     if (before && options$fig.show!='none') par(mar=c(4,4,.1,.1),cex.lab=.95,cex.axis=.9,mgp=c(2,.7,0),tcl=-.3)
+}, crop=knitr::hook_pdfcrop)
+knitr::opts_knit$set(kfigr.prefix=TRUE,
+               kfigr.link=FALSE)
+
+library(tidyverse)
+library(data.table)
+library(here)
+```
+
+```{r datapunkt}
+# KODE HER
+
+```
+
+TEKST HER
+
+### Om Datapunkt
+
+Datapunkt er en irregulær spalte i Transit magasin. Ansvarlig for spalten er [Torkild Hovde Lyngstad](http://torkildl.github.io). Bidrag og forslag kan sendes på [epost](t.h.lyngstad@sosgeo.uio.no). Programmer og datafiler for figurene ligger på spaltens [GitHub-lager](http://github.com/torkildl/transit). Bruk av enkelte av datakildene krever godkjenning av dataeier og er derfor ikke tilgjengelige på lageret.
+
+
+
