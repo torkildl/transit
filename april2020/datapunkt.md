@@ -7,7 +7,8 @@ author: "Torkild Hovde Lyngstad"
 
 ## Norsk dødelighet 1847-2018: Et visuelt minnesmerke om spanskesyken, den forrige pandemien.
 
-Figuren viser dødelighetsrater beregnet for alle alderstrinn under 100 år for hvert år siden 1847. Ratene er rangert, og plottet som ruter med farge etter hvor høy dødeligheten var i den bestemte aldersgruppen det bestemte året. Lyse farger (lys gul) indikerer at raten er blant de høyeste i perioden som helhet, og mørke farger indikerer at raten er blant de laveste i perioden. Dataene kommer fra Human mortality database, den viktiste samledatabasen for dødelighetsdata, men er opprinnelig hentet fra historisk og nåtidig statistikk fremstilt av [Statistisk sentralbyrå](http://www.ssb.no).
+Figuren viser dødelighetsrater beregnet for alle alderstrinn under 100 år for hvert år siden 1847. Ratene er rangert, og plottet som ruter med farge etter hvor høy dødeligheten var i den bestemte aldersgruppen det bestemte året. Lyse farger (lys gul) indikerer at raten er blant de høyeste i perioden som helhet, og mørke farger indikerer at raten er blant de laveste i perioden. Dataene kommer fra Human mortality database, den viktiste samledatabasen for dødelighetsdata, men er opprinnelig fra historisk og nåtidig statistikk fremstilt av [Statistisk sentralbyrå](http://www.ssb.no). Figuren er inspirert av Kieran Healys arbeider med britisk dødelighet.
+
 <br>
 
 ![](datapunkt-1.png)
